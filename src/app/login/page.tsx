@@ -59,7 +59,7 @@ export default function LoginPage() {
                     backgroundSize: '512px',
                 }}
             />
-            <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-0" />
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px] z-0" />
 
             <div className="relative z-10 w-full max-w-2xl">
                 {/* Intro Text */}
@@ -78,32 +78,34 @@ export default function LoginPage() {
                 </motion.div>
 
                 {!selectedUser ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center w-full">
                         {/* Pari */}
                         <motion.button
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2 }}
                             onClick={() => handleProfileClick('pari')}
-                            className="group relative text-left w-full"
+                            className="group relative w-64"
                         >
-                            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex flex-col items-center">
+                            <div className="p-8 rounded-3xl border border-white/40 bg-white/30 backdrop-blur-md shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex flex-col items-center">
                                 <div className="relative mb-6">
-                                    <div className="absolute inset-0 bg-[#B98389] rounded-full blur-lg opacity-20 group-hover:opacity-40 transition" />
+                                    <div className="absolute inset-0 bg-[#B98389] rounded-full blur-xl opacity-20 group-hover:opacity-40 transition" />
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src="/images/pari.jpg"
                                         alt="Pari"
-                                        className="relative w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm"
+                                        className="relative w-28 h-28 rounded-full object-cover border-4 border-white/50 shadow-sm"
                                     />
                                 </div>
 
-                                <h2 className="text-2xl font-serif text-gray-800 mb-2">Pari</h2>
-                                <span className="px-4 py-1 bg-gray-50 text-gray-400 text-xs rounded-full uppercase tracking-widest group-hover:bg-[#B98389] group-hover:text-white transition">
+                                <h2 className="text-3xl font-serif text-[#2D2A26] mb-2 group-hover:text-[#DB2955] transition-colors">Pari</h2>
+                                <span className="px-4 py-1 text-gray-500 text-xs uppercase tracking-widest opacity-60 group-hover:opacity-100 transition">
                                     Tap to Enter
                                 </span>
                             </div>
                         </motion.button>
+
+                        <div className="text-gray-400 font-sans italic text-sm">or</div>
 
                         {/* Saanvi */}
                         <motion.button
@@ -111,21 +113,21 @@ export default function LoginPage() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 }}
                             onClick={() => handleProfileClick('saanvi')}
-                            className="group relative text-left w-full"
+                            className="group relative w-64"
                         >
-                            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex flex-col items-center">
+                            <div className="p-8 rounded-3xl border border-white/40 bg-white/30 backdrop-blur-md shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex flex-col items-center">
                                 <div className="relative mb-6">
-                                    <div className="absolute inset-0 bg-[#DB2955] rounded-full blur-lg opacity-20 group-hover:opacity-40 transition" />
+                                    <div className="absolute inset-0 bg-[#DB2955] rounded-full blur-xl opacity-20 group-hover:opacity-40 transition" />
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src="/images/saanvi.jpg"
                                         alt="Saanvi"
-                                        className="relative w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm"
+                                        className="relative w-28 h-28 rounded-full object-cover border-4 border-white/50 shadow-sm"
                                     />
                                 </div>
 
-                                <h2 className="text-2xl font-serif text-gray-800 mb-2">Saanvi</h2>
-                                <span className="px-4 py-1 bg-gray-50 text-gray-400 text-xs rounded-full uppercase tracking-widest group-hover:bg-[#DB2955] group-hover:text-white transition">
+                                <h2 className="text-3xl font-serif text-[#2D2A26] mb-2 group-hover:text-[#DB2955] transition-colors">Saanvi</h2>
+                                <span className="px-4 py-1 text-gray-500 text-xs uppercase tracking-widest opacity-60 group-hover:opacity-100 transition">
                                     Tap to Enter
                                 </span>
                             </div>
@@ -135,19 +137,21 @@ export default function LoginPage() {
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-xl border border-gray-100"
+                        className="max-w-md mx-auto bg-white/30 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/50"
                     >
-                        <div className="flex flex-col items-center mb-6">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                                src={`/images/${selectedUser}.jpg`}
-                                alt={selectedUser}
-                                className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm mb-4"
-                            />
-                            <h2 className="text-xl font-serif text-gray-800 capitalize">
-                                Welcome back, {selectedUser}
+                        <div className="flex flex-col items-center mb-8">
+                            <div className="relative mb-4">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={`/images/${selectedUser}.jpg`}
+                                    alt={selectedUser || 'User'}
+                                    className="w-24 h-24 rounded-full object-cover border-4 border-white/60 shadow-lg"
+                                />
+                            </div>
+                            <h2 className="text-3xl font-serif text-[#2D2A26] capitalize">
+                                {selectedUser}
                             </h2>
-                            <p className="text-xs text-gray-400 mt-1">Please enter your secret code</p>
+                            <p className="text-xs text-gray-500 mt-2 font-sans tracking-widest uppercase">Secret Code</p>
                         </div>
 
                         <form onSubmit={handleLogin} className="space-y-4">

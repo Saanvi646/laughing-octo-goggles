@@ -56,10 +56,10 @@ export default function LetterDetail({ params }: { params: Promise<{ id: string 
             {letter.cover_image && (
                 <div className="absolute inset-0 z-0">
                     <div
-                        className="absolute inset-0 bg-cover bg-center blur-2xl opacity-40 scale-110"
+                        className="absolute inset-0 bg-cover bg-center blur-sm opacity-70 scale-105"
                         style={{ backgroundImage: `url(${letter.cover_image})` }}
                     />
-                    <div className="absolute inset-0 bg-white/40" />
+                    <div className="absolute inset-0 bg-white/20" />
                 </div>
             )}
 

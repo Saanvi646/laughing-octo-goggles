@@ -1,4 +1,3 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -8,18 +7,18 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
-export default function NewLetterPage() {
+export default function NewSongPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
-        content: '',
-        author: 'Saanvi',
-        cover_image: ''
+        artist: '',
+        cover_url: '',
+        embed_code: ''
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -32,7 +31,7 @@ export default function NewLetterPage() {
         const file = e.target.files[0];
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `letters/${fileName}`;
+        const filePath = `music_covers/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
             .from('images')
@@ -44,7 +43,7 @@ export default function NewLetterPage() {
         } else {
             // Get public URL
             const { data } = supabase.storage.from('images').getPublicUrl(filePath);
-            setFormData({ ...formData, cover_image: data.publicUrl });
+            setFormData({ ...formData, cover_url: data.publicUrl });
             setUploading(false);
         }
     };
@@ -54,20 +53,20 @@ export default function NewLetterPage() {
         setLoading(true);
 
         const { error } = await supabase
-            .from('letters')
+            .from('songs')
             .insert([{
                 title: formData.title,
-                content: formData.content,
-                author: formData.author,
-                cover_image: formData.cover_image
-                // Not sending 'era' anymore
+                artist: formData.artist,
+                cover_url: formData.cover_url,
+                embed_code: formData.embed_code
+                // preview_url is deliberately omitted as we are moving away from it
             }]);
 
         if (error) {
-            alert('Error creating letter: ' + error.message);
+            alert('Error creating song: ' + error.message);
             setLoading(false);
         } else {
-            router.push('/letters');
+            router.push('/music');
             router.refresh();
         }
     };
@@ -75,8 +74,8 @@ export default function NewLetterPage() {
     return (
         <div className="min-h-screen bg-[#FFF7F8] p-8 pt-16 font-sans">
             <div className="max-w-2xl mx-auto">
-                <Link href="/letters" className="inline-flex items-center text-gray-400 hover:text-gray-600 mb-8 transition-colors">
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to Collection
+                <Link href="/music" className="inline-flex items-center text-gray-400 hover:text-gray-600 mb-8 transition-colors">
+                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to Playlist
                 </Link>
 
                 <motion.div
@@ -84,11 +83,11 @@ export default function NewLetterPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100"
                 >
-                    <h1 className="text-3xl font-hand font-bold text-[#DB2955] mb-6">Write a Letter</h1>
+                    <h1 className="text-3xl font-hand font-bold text-[#DB2955] mb-6">Add a Song</h1>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Song Title</label>
                             <input
                                 type="text"
                                 name="title"
@@ -96,21 +95,19 @@ export default function NewLetterPage() {
                                 value={formData.title}
                                 onChange={handleChange}
                                 className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#DB2955] focus:border-transparent outline-none transition"
-                                placeholder="e.g. The First Hello"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Author</label>
-                            <select
-                                name="author"
-                                value={formData.author}
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Artist</label>
+                            <input
+                                type="text"
+                                name="artist"
+                                required
+                                value={formData.artist}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#DB2955] focus:border-transparent outline-none transition bg-white"
-                            >
-                                <option value="Saanvi">Saanvi</option>
-                                <option value="Pari">Pari</option>
-                            </select>
+                                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#DB2955] focus:border-transparent outline-none transition"
+                            />
                         </div>
 
                         <div>
@@ -119,7 +116,7 @@ export default function NewLetterPage() {
                                 <label className="flex-1 cursor-pointer">
                                     <div className="w-full px-4 py-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-[#DB2955] transition flex items-center justify-center gap-2 text-gray-500 hover:text-[#DB2955]">
                                         {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <UploadCloud className="w-5 h-5" />}
-                                        <span className="text-sm font-medium">{uploading ? 'Uploading...' : 'Click to Upload Photo'}</span>
+                                        <span className="text-sm font-medium">{uploading ? 'Uploading...' : 'Click to Upload Album Art'}</span>
                                     </div>
                                     <input
                                         type="file"
@@ -130,24 +127,22 @@ export default function NewLetterPage() {
                                     />
                                 </label>
                             </div>
-                            {formData.cover_image && (
-                                <div className="mt-3 relative w-full h-48 rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+                            {formData.cover_url && (
+                                <div className="mt-3 relative w-32 h-32 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 mx-auto">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={formData.cover_image} alt="Preview" className="w-full h-full object-cover" />
+                                    <img src={formData.cover_url} alt="Preview" className="w-full h-full object-cover" />
                                 </div>
                             )}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Apple Music Embed Code (Optional)</label>
                             <textarea
-                                name="content"
-                                required
-                                rows={8}
-                                value={formData.content}
+                                name="embed_code"
+                                value={formData.embed_code}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#DB2955] focus:border-transparent outline-none transition font-hand text-lg"
-                                placeholder="Dear..."
+                                placeholder='<iframe allow="autoplay *; encrypted-media *..." ...></iframe>'
+                                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#DB2955] focus:border-transparent outline-none transition h-24 font-mono text-xs"
                             />
                         </div>
 
@@ -156,7 +151,7 @@ export default function NewLetterPage() {
                             disabled={loading || uploading}
                             className="w-full bg-[#DB2955] text-white py-3 rounded-xl font-bold hover:bg-[#b01e40] transition flex items-center justify-center gap-2 shadow-lg shadow-pink-500/30 disabled:opacity-50"
                         >
-                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save className="w-5 h-5" /> Save Letter</>}
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save className="w-5 h-5" /> Save Song</>}
                         </button>
                     </form>
                 </motion.div>

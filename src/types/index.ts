@@ -16,6 +16,7 @@ export interface Song {
     artist: string;
     cover_url: string | null;
     preview_url: string | null;
+    embed_code?: string;
 }
 
 export interface PromiseItem {

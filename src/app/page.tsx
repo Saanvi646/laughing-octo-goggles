@@ -54,13 +54,14 @@ export default function Home() {
       </div>
 
       {/* Navbar Area */}
-      <nav className="absolute top-0 right-0 p-6 z-20">
+      {/* Navbar Area */}
+      <nav className="fixed top-6 right-6 z-50">
         <button
           onClick={handleSignOut}
-          className="group px-4 py-2 bg-white/50 hover:bg-red-50/80 text-red-400 rounded-full text-sm font-bold transition backdrop-blur-sm shadow-sm border border-red-100 flex items-center gap-2 tracking-wider"
+          className="group px-4 py-2 bg-white/50 hover:bg-red-50/90 text-red-500 rounded-full text-lg font-hand font-bold transition backdrop-blur-md shadow-sm border border-red-100 flex items-center gap-2 tracking-wider cursor-pointer"
         >
           <span>Sign Out</span>
-          <LogOut className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          <LogOut className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </button>
       </nav>
 

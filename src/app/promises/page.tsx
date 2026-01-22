@@ -3,7 +3,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft, CheckCircle2, Heart } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Heart, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { PromiseItem } from '@/types';
@@ -29,6 +29,22 @@ export default function PromisesPage() {
         fetchPromises();
     }, []);
 
+    const handleDelete = async (id: number) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this promise?");
+        if (!confirmDelete) return;
+
+        const { error } = await supabase
+            .from('promises')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            alert('Error deleting promise');
+        } else {
+            setPromises(promises.filter(p => p.id !== id));
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[#FFF7F8] p-8 pt-16 font-sans">
             <div className="max-w-3xl mx-auto">
@@ -36,9 +52,14 @@ export default function PromisesPage() {
                     <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
                 </Link>
 
-                <div className="flex items-center gap-3 mb-8">
-                    <h1 className="text-4xl font-hand font-bold text-[#DB2955]">Promises</h1>
-                    <Heart className="w-6 h-6 text-[#DB2955] fill-[#DB2955]" />
+                <div className="flex justify-between items-center mb-8">
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-4xl font-hand font-bold text-[#DB2955]">Promises</h1>
+                        <Heart className="w-6 h-6 text-[#DB2955] fill-[#DB2955]" />
+                    </div>
+                    <Link href="/promises/new" className="px-4 py-2 bg-[#DB2955] text-white rounded-full text-sm font-bold shadow-md hover:bg-[#b01e40] transition">
+                        + New Promise
+                    </Link>
                 </div>
 
                 {loading ? (
@@ -59,7 +80,15 @@ export default function PromisesPage() {
                                     <CheckCircle2 className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-medium text-gray-800 mb-2">{promise.title}</h3>
+                                    <div className="flex justify-between items-start w-full">
+                                        <h3 className="text-xl font-medium text-gray-800 mb-2">{promise.title}</h3>
+                                        <button
+                                            onClick={() => handleDelete(promise.id)}
+                                            className="text-gray-400 hover:text-red-500 transition p-1 ml-4"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                     <p className="text-gray-600 leading-relaxed font-serif italic">{promise.description}</p>
                                 </div>
                             </motion.div>
