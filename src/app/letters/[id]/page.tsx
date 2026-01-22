@@ -8,6 +8,8 @@ import { notFound } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Letter } from '@/types';
+// eslint-disable-next-line @next/next/no-img-element
+import Image from 'next/image';
 
 export default function LetterDetail({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
@@ -47,33 +49,23 @@ export default function LetterDetail({ params }: { params: Promise<{ id: string 
         return notFound();
     }
 
-    // Era-based styling logic
-    const getEraStyles = (era: string) => {
-        switch (era) {
-            case 'midnights': return 'bg-slate-900 text-slate-200 shadow-indigo-500/20';
-            case 'red': return 'bg-[#FFF5F5] text-gray-800';
-            case 'folklore': return 'bg-[#F3F4F6] text-gray-800';
-            default: return 'bg-[#FFF0F3] text-gray-800';
-        }
-    };
-
-    const getBadgeStyles = (era: string) => {
-        switch (era) {
-            case 'midnights': return 'bg-slate-100 text-slate-600';
-            case 'red': return 'bg-red-50 text-red-500';
-            case 'folklore': return 'bg-gray-100 text-gray-500';
-            default: return 'bg-pink-50 text-pink-500';
-        }
-    };
-
-    const eraStyles = getEraStyles(letter.era);
-    const badgeStyles = getBadgeStyles(letter.era);
-
     return (
-        <div className={`min-h-screen py-10 px-4 transition-colors duration-500 ${letter.era === 'midnights' ? 'bg-slate-900' : 'bg-[#FFF7F8]'} font-sans`}>
-            <div className="max-w-3xl mx-auto relative z-10">
+        <div className="min-h-screen relative font-sans overflow-hidden bg-[#FFF7F8]">
 
-                <Link href="/letters" className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full transition text-gray-500 hover:bg-black/5 hover:text-gray-900 bg-white/50 backdrop-blur-sm">
+            {/* Dynamic Background */}
+            {letter.cover_image && (
+                <div className="absolute inset-0 z-0">
+                    <div
+                        className="absolute inset-0 bg-cover bg-center blur-2xl opacity-40 scale-110"
+                        style={{ backgroundImage: `url(${letter.cover_image})` }}
+                    />
+                    <div className="absolute inset-0 bg-white/40" />
+                </div>
+            )}
+
+            <div className="max-w-3xl mx-auto relative z-10 py-10 px-4">
+
+                <Link href="/letters" className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full transition text-gray-500 hover:bg-black/5 hover:text-gray-900 bg-white/50 backdrop-blur-sm shadow-sm border border-white/40">
                     <ArrowLeft className="w-4 h-4" />
                     <span>back to collection</span>
                 </Link>
@@ -82,33 +74,45 @@ export default function LetterDetail({ params }: { params: Promise<{ id: string 
                 <motion.article
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`px-8 py-12 md:p-16 shadow-2xl relative mx-auto paper-texture ${eraStyles} bg-white`}
+                    className="px-8 py-12 md:p-16 shadow-2xl relative mx-auto paper-texture bg-white/95 backdrop-blur-sm rounded-sm"
                 >
                     {/* Fold effect */}
-                    <div className="absolute top-0 right-0 border-t-[40px] border-r-[40px] border-t-[#f3f4f6] border-r-[#FFF7F8] shadow-sm" />
+                    <div className="absolute top-0 right-0 border-t-[40px] border-r-[40px] border-t-[#f3f4f6] border-r-transparent shadow-sm opacity-50" />
 
                     <header className="mb-10 text-center">
-                        <span className={`inline-block px-3 py-1 mb-4 text-xs font-bold tracking-widest uppercase rounded-full ${badgeStyles}`}>
-                            {letter.era} Era
-                        </span>
+                        {/* Cover Image in Header if exists */}
+                        {letter.cover_image && (
+                            <div className="w-full h-64 mb-8 rounded-lg overflow-hidden shadow-inner relative">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={letter.cover_image}
+                                    alt="Cover"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        )}
 
-                        <h1 className="text-3xl md:text-5xl font-serif mb-2">
+                        <h1 className="text-3xl md:text-5xl font-serif mb-4 text-gray-900">
                             {letter.title}
                         </h1>
 
-                        <time className="text-sm opacity-60">
-                            {new Date(letter.created_at).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}
-                        </time>
+                        <div className="flex items-center justify-center gap-2 text-sm opacity-60 text-gray-500 font-serif italic">
+                            <time>
+                                {new Date(letter.created_at).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}
+                            </time>
+                            <span>•</span>
+                            <span>{letter.author}</span>
+                        </div>
                     </header>
 
-                    <div className="prose prose-lg prose-p:font-hand prose-p:text-2xl prose-p:leading-relaxed mx-auto max-w-none font-hand text-xl md:text-2xl whitespace-pre-line leading-loose text-gray-700">
+                    <div className="prose prose-lg prose-p:font-hand prose-p:text-2xl prose-p:leading-relaxed mx-auto max-w-none font-hand text-xl md:text-2xl whitespace-pre-line leading-loose text-gray-700 ">
                         {letter.content}
                     </div>
 
                     <div className="mt-16 pt-8 border-t border-gray-100 text-center">
                         <p className="font-serif italic text-gray-400 text-sm">
                             forever & always, <br />
-                            <span className="not-italic font-bold text-gray-600">{letter.author}</span>
+                            <span className="not-italic font-bold text-gray-600 font-sans tracking-wide uppercase text-xs mt-1 block">{letter.author}</span>
                         </p>
                     </div>
 
