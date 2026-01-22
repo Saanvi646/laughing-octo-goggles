@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- User Background -->
+<div class="fixed inset-0 z-[-1]"
+  style="background-image: url('/static/images/home_bg.png'); background-size: cover; background-position: center;">
+  <div class="absolute inset-0 bg-white/50 backdrop-blur-sm"></div>
+</div>
+
+<div class="relative z-10 mt-20 max-w-3xl mx-auto">
+
+  <h1 class="text-4xl font-hand mb-3">
+    Welcome back, {{ user.username|title }} 🎀
+  </h1>
+
+  <p class="text-gray-500 mb-12">
+    this is your shared space — slow, private, intentional
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <a href="/letters/"
+      class="block bg-white/40 backdrop-blur-md border border-white/50 rounded-xl p-6 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg transition-all duration-300 md:col-span-2">
+      <h2 class="text-xl font-medium text-gray-800">Letters</h2>
+      <p class="text-sm text-gray-500">
+        long-form thoughts, written and kept
+      </p>
+    </a>
+
+    <a href="{% url 'journey' %}"
+      class="block bg-white/40 backdrop-blur-md border border-white/50 rounded-xl p-6 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg transition-all duration-300 md:col-span-2">
+      <h2 class="text-xl font-medium text-gray-800">Our Journey</h2>
+      <p class="text-sm text-gray-500">
+        a year in review, month by month
+      </p>
+    </a>
+
+    <a href="{% url 'music_list' %}"
+      class="block bg-white/40 backdrop-blur-md border border-white/50 rounded-xl p-6 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg transition-all duration-300">
+      <h2 class="text-xl font-medium text-gray-800">Playlist </h2>
+      <p class="text-sm text-gray-500">
+        songs that remind me of us
+      </p>
+    </a>
+
+    <a href="{% url 'promises_list' %}"
+      class="block bg-white/40 backdrop-blur-md border border-white/50 rounded-xl p-6 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg transition-all duration-300">
+      <h2 class="text-xl font-medium text-gray-800">Promises </h2>
+      <p class="text-sm text-gray-500">
+        pinky swears and commitments
+      </p>
+    </a>
+
+  </div>
+
+
+
+</div>
+
+
+{% endblock %}

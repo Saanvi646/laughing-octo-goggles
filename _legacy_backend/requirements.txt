@@ -1,0 +1,8 @@
+Django==5.1.7
+gunicorn==23.0.0
+whitenoise==6.11.0
+dj-database-url==3.1.0
+psycopg2-binary==2.9.11
+sqlparse==0.5.3
+asgiref==3.8.1
+pillow==12.1.0

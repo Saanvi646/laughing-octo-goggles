@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    /* Scrapbook CSS */
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
+
+    .handwritten {
+        font-family: 'Caveat', cursive;
+        color: #555;
+    }
+
+    .scrapbook-item {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        backface-visibility: hidden;
+    }
+
+    /* Random rotations for natural feel */
+    .scrapbook-item:nth-child(odd) {
+        transform: rotate(-3deg);
+    }
+
+    .scrapbook-item:nth-child(even) {
+        transform: rotate(2deg);
+    }
+
+    .scrapbook-item:nth-child(3n) {
+        transform: rotate(-1.5deg);
+    }
+
+    .scrapbook-item:nth-child(5n) {
+        transform: rotate(4deg);
+    }
+
+    .scrapbook-item:hover {
+        transform: scale(1.08) rotate(0deg) !important;
+        z-index: 20;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Modal Animation */
+    @keyframes scrapbookPop {
+        0% {
+            opacity: 0;
+            transform: scale(0.8) rotate(-5deg);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+    }
+
+    .animate-pop {
+        animation: scrapbookPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+</style>
+
+<div class="mt-8 mb-24 max-w-5xl mx-auto px-4">
+
+    <div class="flex items-center gap-4 mb-12">
+        <a href="{% url 'home' %}"
+            class="text-gray-400 hover:text-gray-600 transition p-2 rounded-full hover:bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+        </a>
+        <h1 class="text-4xl font-hand text-gray-800">Our Journey</h1>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 p-4">
+        {% for month in months %}
+        <div onclick="openModal('{{ month|lower }}')" class="scrapbook-item relative cursor-pointer group">
+
+            <!-- Polaroid Container -->
+            <div
+                class="bg-white p-3 md:p-4 pb-8 md:pb-12 shadow-md hover:shadow-xl transition-shadow border-t border-white/50">
+
+                <!-- Image / Placeholder -->
+                <div class="aspect-square bg-gray-100 overflow-hidden mb-3 relative">
+
+                    <img src="/static/images/journey/{{ month|lower }}.png" class="w-full h-full object-cover"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+
+                    <!-- Fallback if no image -->
+                    <div
+                        class="hidden w-full h-full flex flex-col items-center justify-center text-gray-300 bg-gray-50 border-2 border-dashed border-gray-200">
+                        <span class="text-3xl mb-1 opacity-50">✨</span>
+                        <span class="text-xs">no memory yet</span>
+                    </div>
+
+                </div>
+
+                <!-- Caption -->
+                <div class="absolute bottom-2 md:bottom-4 left-0 right-0 text-center">
+                    <span class="handwritten text-xl md:text-2xl font-bold text-gray-700">
+                        {{ month }}
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- Tape Effect (Decorative) -->
+            <div
+                class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-white/40 shadow-sm rotate-2 backdrop-blur-sm pointer-events-none">
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- Full Screen Modal -->
+<div id="imageModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-md transition-all duration-300"
+    role="dialog" aria-modal="true">
+
+    <button onclick="closeModal()" class="absolute top-6 right-6 text-white/70 hover:text-white z-20 p-2 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <div class="w-full h-full flex items-center justify-center p-4 md:p-10" onclick="closeModal()">
+
+        <div id="modalContent" class="relative max-w-5xl max-h-full transition-transform">
+            <img id="modalImage" src=""
+                class="max-h-[90vh] max-w-full object-contain rounded-md shadow-2xl ring-1 ring-white/10"
+                onclick="event.stopPropagation()"> <!-- Stop click from closing when clicking image -->
+
+            <div id="imageError" class="hidden absolute inset-0 flex items-center justify-center text-white/50">
+                <p>Memory not found for this month yet ✨</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function openModal(month) {
+        const modal = document.getElementById('imageModal');
+        const content = document.getElementById('modalContent');
+        const img = document.getElementById('modalImage');
+        const error = document.getElementById('imageError');
+
+        img.src = `/static/images/journey/${month}.png`;
+
+        img.onload = () => {
+            error.classList.add('hidden');
+            img.classList.remove('hidden');
+        };
+
+        img.onerror = () => {
+            error.classList.remove('hidden');
+            img.classList.add('hidden');
+        };
+
+        modal.classList.remove('hidden');
+
+        // Trigger Animation
+        content.classList.remove('animate-pop');
+        void content.offsetWidth; // trigger reflow
+        content.classList.add('animate-pop');
+
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        // Clear src after fade
+        setTimeout(() => {
+            document.getElementById('modalImage').src = '';
+        }, 200);
+    }
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Static Backdrop -->
+<div class="fixed inset-0 z-0"
+  style="background-image: url('/static/images/backdrop.png'); background-repeat: repeat; background-size: 512px;">
+  <div class="absolute inset-0 bg-white/60 backdrop-blur-[2px]"></div>
+</div>
+
+<div class="relative z-10 min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
+
+  <div class="animate-fade-in-up w-full max-w-sm flex flex-col items-center">
+
+    <!-- Profile Image with Glow -->
+    <div class="relative mb-8">
+      <div class="absolute inset-0 rounded-full blur-xl opacity-30 animate-pulse"
+        style="background-color: {% if selected_username == 'pari' %}#B98389{% else %}#DB2955{% endif %}"></div>
+      <img src="/static/images/{{ selected_username }}.jpg"
+        class="relative w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg" style="object-fit: cover;">
+    </div>
+
+    <!-- Greeting -->
+    <h1 class="text-4xl md:text-5xl font-hand text-[#2D2A26] mb-3">
+      welcome back, {{ selected_username|title }}
+    </h1>
+
+    <p class="text-gray-400 font-sans tracking-wide text-sm uppercase mb-10">
+      enter your secret key
+    </p>
+
+    <!-- Error Message -->
+    {% if error %}
+    <div class="mb-6 px-4 py-2 bg-red-50 text-red-500 rounded-lg text-sm border border-red-100 w-full animate-bounce">
+      Ops, wrong key. Try again?
+    </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="POST" action="{% url 'login' %}" class="w-full">
+      {% csrf_token %}
+      <input type="hidden" name="username" value="{{ selected_username }}">
+
+      <div class="relative group space-y-4">
+        <input type="password" name="password" placeholder="••••••••" required autofocus
+          class="w-full bg-white border-2 border-gray-100 text-center text-xl placeholder-gray-300 text-gray-600 px-6 py-4 rounded-full focus:outline-none focus:border-opacity-50 focus:ring-4 focus:ring-opacity-20 transition-all shadow-sm"
+          style="border-color: {% if selected_username == 'pari' %}#B98389{% else %}#DB2955{% endif %}; --tw-ring-color: {% if selected_username == 'pari' %}#B98389{% else %}#DB2955{% endif %}">
+
+        <button type="submit"
+          class="w-full py-4 rounded-full text-white text-lg font-medium transition-transform active:scale-[0.98] shadow-md hover:shadow-lg tracking-wide font-hand text-2xl"
+          style="background-color: {% if selected_username == 'pari' %}#B98389{% else %}#DB2955{% endif %}">
+          Unlock ✨
+        </button>
+      </div>
+    </form>
+
+    <!-- Back Link -->
+    <a href="{% url 'login' %}"
+      class="mt-8 text-gray-400 text-sm hover:text-gray-600 transition border-b border-transparent hover:border-gray-300 pb-1">
+      switch profile
+    </a>
+
+  </div>
+
+</div>
+
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+</style>
+
+{% endblock %}

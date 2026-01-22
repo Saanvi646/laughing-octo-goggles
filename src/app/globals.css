@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  /* Legacy Light Theme Base */
+  --background: #FFF7F8;
+  --foreground: #1f2937;
+  /* Gray 800 */
+
+  /* Glassy Card Base (Light) */
+  --card: rgba(255, 255, 255, 0.4);
+  --card-foreground: #1f2937;
+
+  /* Accents */
+  --primary: #DB2955;
+  /* The specific pink/red from legacy nav */
+  --primary-foreground: #ffffff;
+
+  --secondary: #6b7280;
+  /* Gray 500 */
+  --secondary-foreground: #f9fafb;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --font-sans: var(--font-inter);
+  --font-hand: var(--font-caveat);
+  --font-serif: var(--font-playfair);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Utilities (Legacy Style) */
+.glass {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}

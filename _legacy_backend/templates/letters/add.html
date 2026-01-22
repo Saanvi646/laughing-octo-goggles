@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="min-h-screen py-12 px-4 flex items-center justify-center">
+
+  <div class="max-w-2xl w-full">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8 px-2">
+      <a href="{% url 'letters' %}"
+        class="text-gray-400 hover:text-gray-600 transition flex items-center gap-2 text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+          class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        nevermind
+      </a>
+    </div>
+
+    <!-- Paper Form -->
+    <div class="bg-white p-8 md:p-12 rounded-xl shadow-xl border border-gray-100 relative">
+      <h1 class="text-4xl font-serif text-[#2D2A26] mb-8 text-center" style="font-family: 'Caveat', cursive;">
+        write a note...
+      </h1>
+
+      <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-6">
+        {% csrf_token %}
+
+        <!-- Title -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Title</label>
+          <input type="text" name="title" required
+            class="w-full text-2xl font-serif border-b-2 border-gray-200 focus:border-red-400 outline-none pb-2 placeholder-gray-300 transition-colors"
+            placeholder="Give it a name">
+        </div>
+
+        <!-- Content -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Message</label>
+          <textarea name="content" required rows="6"
+            class="w-full text-lg leading-relaxed border-none bg-gray-50 rounded-lg p-4 focus:ring-0 placeholder-gray-300 resize-none"
+            style="font-family: 'Caveat', cursive;" placeholder="What's on your mind?"></textarea>
+        </div>
+
+        <!-- Cover Image -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Add a photo
+            (optional)</label>
+          <div class="relative group">
+            <input type="file" name="cover_image" class="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-red-50 file:text-red-700
+              hover:file:bg-red-100
+              cursor-pointer
+            " />
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+          class="mt-4 w-full bg-[#2D2A26] hover:bg-black text-white py-3 rounded-full font-medium transition shadow-lg hover:-translate-y-0.5">
+          Save Memory
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

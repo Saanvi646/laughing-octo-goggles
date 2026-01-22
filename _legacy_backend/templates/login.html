@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Static Backdrop -->
+<div class="fixed inset-0 z-0"
+  style="background-image: url('/static/images/backdrop.png'); background-repeat: repeat; background-size: 512px;">
+  <div class="absolute inset-0 bg-white/60 backdrop-blur-[2px]"></div>
+</div>
+
+<div class="relative z-10 min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
+
+  <!-- Intro Text -->
+  <div class="mb-12 space-y-2 animate-fade-in-up">
+    <h1 class="text-5xl md:text-6xl font-hand text-[#2D2A26]">
+      hey, this is just for us
+    </h1>
+    <p class="text-gray-500 font-sans tracking-wide text-sm uppercase">
+      a shared space for our memories
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+
+    <!-- Pari -->
+    <a href="{% url 'enter' %}?username=pari" class="group relative">
+      <div
+        class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex flex-col items-center">
+
+        <div class="relative mb-6">
+          <div class="absolute inset-0 bg-[#B98389] rounded-full blur-lg opacity-20 group-hover:opacity-40 transition">
+          </div>
+          <img src="/static/images/pari.jpg"
+            class="relative w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm"
+            style="object-fit: cover;">
+        </div>
+
+        <h2 class="text-2xl font-serif text-gray-800 mb-2">Pari</h2>
+        <span
+          class="px-4 py-1 bg-gray-50 text-gray-400 text-xs rounded-full uppercase tracking-widest group-hover:bg-[#B98389] group-hover:text-white transition">
+          Tap to Enter
+        </span>
+      </div>
+    </a>
+
+    <!-- Saanvi -->
+    <a href="{% url 'enter' %}?username=saanvi" class="group relative">
+      <div
+        class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl flex flex-col items-center">
+
+        <div class="relative mb-6">
+          <div class="absolute inset-0 bg-[#DB2955] rounded-full blur-lg opacity-20 group-hover:opacity-40 transition">
+          </div>
+          <img src="/static/images/saanvi.jpg"
+            class="relative w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm"
+            style="object-fit: cover;">
+        </div>
+
+        <h2 class="text-2xl font-serif text-gray-800 mb-2">Saanvi</h2>
+        <span
+          class="px-4 py-1 bg-gray-50 text-gray-400 text-xs rounded-full uppercase tracking-widest group-hover:bg-[#DB2955] group-hover:text-white transition">
+          Tap to Enter
+        </span>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+</style>
+
+{% endblock %}
