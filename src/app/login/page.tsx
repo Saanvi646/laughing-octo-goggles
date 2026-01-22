@@ -92,7 +92,7 @@ export default function LoginPage() {
                                     <div className="absolute inset-0 bg-[#B98389] rounded-full blur-xl opacity-20 group-hover:opacity-40 transition" />
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
-                                        src="/images/pari.jpg"
+                                        src="/images/profile_pari.jpg"
                                         alt="Pari"
                                         className="relative w-28 h-28 rounded-full object-cover border-4 border-white/50 shadow-sm"
                                     />
@@ -120,7 +120,7 @@ export default function LoginPage() {
                                     <div className="absolute inset-0 bg-[#DB2955] rounded-full blur-xl opacity-20 group-hover:opacity-40 transition" />
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
-                                        src="/images/saanvi.jpg"
+                                        src="/images/profile_saanvi.jpg"
                                         alt="Saanvi"
                                         className="relative w-28 h-28 rounded-full object-cover border-4 border-white/50 shadow-sm"
                                     />
@@ -143,7 +143,7 @@ export default function LoginPage() {
                             <div className="relative mb-4">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    src={`/images/${selectedUser}.jpg`}
+                                    src={`/images/profile_${selectedUser}.jpg`}
                                     alt={selectedUser || 'User'}
                                     className="w-24 h-24 rounded-full object-cover border-4 border-white/60 shadow-lg"
                                 />
