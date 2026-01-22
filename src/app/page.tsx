@@ -3,8 +3,20 @@
 
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
+import { LogOut } from 'lucide-react';
 
 export default function Home() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+    router.push('/login');
+  };
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -40,6 +52,17 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm" />
       </div>
+
+      {/* Navbar Area */}
+      <nav className="absolute top-0 right-0 p-6 z-20">
+        <button
+          onClick={handleSignOut}
+          className="group px-4 py-2 bg-white/50 hover:bg-red-50/80 text-red-400 rounded-full text-sm font-bold transition backdrop-blur-sm shadow-sm border border-red-100 flex items-center gap-2 tracking-wider"
+        >
+          <span>Sign Out</span>
+          <LogOut className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+        </button>
+      </nav>
 
       <motion.div
         variants={containerVariants}
