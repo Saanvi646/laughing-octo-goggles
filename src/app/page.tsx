@@ -12,7 +12,7 @@ export default function Home() {
   const router = useRouter();
   const supabase = createClient();
   const [username, setUsername] = useState('...');
-  const [showNormalSite, setShowNormalSite] = useState(false);
+  const [pariState, setPariState] = useState<'traitor' | 'cold' | 'nostalgia'>('traitor');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,7 +56,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative overflow-hidden">
-      {username === 'Pari' && !showNormalSite ? (
+      {username === 'Pari' && pariState === 'traitor' ? (
         <div className="fixed inset-0 bg-[#0a0a0a] z-[100] flex flex-col items-center justify-center p-8 text-center overflow-hidden">
           <motion.h1 
             initial={{ opacity: 0, y: 10 }}
@@ -87,7 +87,7 @@ export default function Home() {
               Leave
             </button>
             <button
-              onClick={() => setShowNormalSite(true)}
+              onClick={() => setPariState('cold')}
               className="text-xs text-gray-700 hover:text-gray-400 transition-colors font-serif italic underline underline-offset-4"
             >
               if you choose to be stubborn about it
@@ -100,12 +100,13 @@ export default function Home() {
           <div
             className="fixed inset-0 z-[-1]"
             style={{
-              backgroundImage: "url('/images/home_bg.png')",
+              backgroundImage: (username === 'Pari' && pariState === 'cold') ? "none" : "url('/images/home_bg.png')",
+              backgroundColor: (username === 'Pari' && pariState === 'cold') ? "#0f0f0f" : "transparent",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
           >
-            <div className="absolute inset-0 bg-white/50 backdrop-blur-sm" />
+            <div className={`absolute inset-0 ${(username === 'Pari' && pariState === 'cold') ? 'bg-black/80' : 'bg-white/50 backdrop-blur-sm'}`} />
           </div>
 
           {/* Navbar Area */}
@@ -127,50 +128,95 @@ export default function Home() {
           >
             <motion.h1
               variants={itemVariants}
-              className="text-4xl font-hand mb-3 text-gray-800"
+              className={`text-4xl font-hand mb-3 ${(username === 'Pari' && pariState === 'cold') ? 'text-gray-300' : 'text-gray-800'}`}
             >
-              Welcome back, {username} 🎀
+              {username === 'Pari' && pariState === 'cold' ? 'Welcome to reality.' : `Welcome back, ${username} 🎀`}
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-gray-500 mb-12 font-sans"
+              className={`mb-12 font-sans ${(username === 'Pari' && pariState === 'cold') ? 'text-gray-600 italic' : 'text-gray-500'}`}
             >
-              good 'ol-days' babbyyyy
+              {username === 'Pari' && pariState === 'cold' ? 'everything is different now.' : "good 'ol-days' babbyyyy"}
             </motion.p>
 
             <motion.div
               variants={itemVariants}
               className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans"
             >
-              <Link href="/letters" className="group md:col-span-2">
-                <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg">
-                  <h2 className="text-xl font-medium text-gray-800 mb-1">Letters</h2>
-                  <p className="text-sm text-gray-500"> just some empty words </p>
-                </div>
-              </Link>
+              {username === 'Pari' && pariState === 'cold' ? (
+                  <>
+                      <div className="rounded-xl p-6 border border-gray-800 bg-white/5 transition-all">
+                          <h2 className="text-xl font-medium text-gray-400 mb-1">Unsent Letters</h2>
+                          <p className="text-sm text-gray-600">things you don't get to read anymore.</p>
+                      </div>
+                      <div className="rounded-xl p-6 border border-gray-800 bg-white/5 transition-all">
+                          <h2 className="text-xl font-medium text-gray-400 mb-1">The Aftermath</h2>
+                          <p className="text-sm text-gray-600">a year in review, but only the bad parts.</p>
+                      </div>
+                      <div className="rounded-xl p-6 border border-gray-800 bg-white/5 transition-all h-full">
+                          <h2 className="text-xl font-medium text-gray-400 mb-1">Current Playlist</h2>
+                          <p className="text-sm text-gray-600">songs that help me forget you.</p>
+                      </div>
+                      <div className="rounded-xl p-6 border border-gray-800 bg-white/5 transition-all h-full">
+                          <h2 className="text-xl font-medium text-gray-400 mb-1">Broken Promises</h2>
+                          <p className="text-sm text-gray-600">a museum of things you didn't keep.</p>
+                      </div>
+                  </>
+              ) : (
+                  <>
+                      <Link href="/letters" className="group md:col-span-2">
+                        <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg">
+                          <h2 className="text-xl font-medium text-gray-800 mb-1">Letters</h2>
+                          <p className="text-sm text-gray-500"> just some empty words </p>
+                        </div>
+                      </Link>
 
-              <Link href="/journey" className="group md:col-span-2">
-                <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg">
-                  <h2 className="text-xl font-medium text-gray-800 mb-1">Our Journey</h2>
-                  <p className="text-sm text-gray-500">a year in review, month by month</p>
-                </div>
-              </Link>
+                      <Link href="/journey" className="group md:col-span-2">
+                        <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg">
+                          <h2 className="text-xl font-medium text-gray-800 mb-1">Our Journey</h2>
+                          <p className="text-sm text-gray-500">a year in review, month by month</p>
+                        </div>
+                      </Link>
 
-              <Link href="/music" className="group">
-                <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg h-full">
-                  <h2 className="text-xl font-medium text-gray-800 mb-1">Playlist</h2>
-                  <p className="text-sm text-gray-500">songs that remind me of us</p>
-                </div>
-              </Link>
+                      <Link href="/music" className="group">
+                        <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg h-full">
+                          <h2 className="text-xl font-medium text-gray-800 mb-1">Playlist</h2>
+                          <p className="text-sm text-gray-500">songs that remind me of us</p>
+                        </div>
+                      </Link>
 
-              <Link href="/promises" className="group">
-                <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg h-full">
-                  <h2 className="text-xl font-medium text-gray-800 mb-1">Promises</h2>
-                  <p className="text-sm text-gray-500">pinky swears and commitments(do you find it funny too?)</p>
-                </div>
-              </Link>
+                      <Link href="/promises" className="group">
+                        <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg h-full">
+                          <h2 className="text-xl font-medium text-gray-800 mb-1">Promises</h2>
+                          <p className="text-sm text-gray-500">pinky swears and commitments(do you find it funny too?)</p>
+                        </div>
+                      </Link>
+                  </>
+              )}
             </motion.div>
+
+            {username === 'Pari' && pariState === 'cold' && (
+                <div className="mt-16 text-center">
+                    <button 
+                        onClick={() => setPariState('nostalgia')}
+                        className="text-xs text-gray-600 hover:text-gray-400 underline underline-offset-4 transition font-serif italic"
+                    >
+                        if you came here to live in old memories, click here.
+                    </button>
+                </div>
+            )}
+            
+            {username === 'Pari' && pariState === 'nostalgia' && (
+                <div className="mt-16 text-center">
+                    <button 
+                        onClick={() => setPariState('cold')}
+                        className="text-xs text-red-400 hover:text-red-500 underline underline-offset-4 transition font-serif italic"
+                    >
+                        return to reality.
+                    </button>
+                </div>
+            )}
           </motion.div>
         </>
       )}
