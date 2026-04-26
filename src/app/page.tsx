@@ -12,6 +12,7 @@ export default function Home() {
   const router = useRouter();
   const supabase = createClient();
   const [username, setUsername] = useState('...');
+  const [showNormalSite, setShowNormalSite] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -55,43 +56,43 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative overflow-hidden">
-      {username === 'Pari' ? (
-        <div className="fixed inset-0 bg-[#050505] z-[100] flex flex-col items-center justify-center p-8 text-center overflow-hidden">
+      {username === 'Pari' && !showNormalSite ? (
+        <div className="fixed inset-0 bg-[#0a0a0a] z-[100] flex flex-col items-center justify-center p-8 text-center overflow-hidden">
           <motion.h1 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5 }}
-            className="text-5xl md:text-7xl font-serif text-red-700 font-bold mb-8 z-10 uppercase tracking-[0.2em] animate-pulse drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="text-4xl md:text-6xl font-serif text-gray-400 font-bold mb-8 z-10 uppercase tracking-[0.4em]"
           >
-            HAUNTED
+            TRAITOR
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 2 }}
-            className="text-2xl md:text-3xl text-gray-600 font-serif italic mb-12 z-10"
+            className="text-lg md:text-xl text-gray-600 font-serif italic mb-12 z-10"
           >
             this is my site now. <br/> you shoo away.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2.5 }}
-            className="z-10"
+            transition={{ delay: 2 }}
+            className="z-10 flex flex-col items-center gap-8"
           >
             <button
               onClick={handleSignOut}
-              className="px-8 py-3 border border-red-900 text-red-700 hover:bg-red-950/40 hover:text-red-500 transition-all rounded font-sans uppercase tracking-[0.2em] text-sm shadow-[0_0_10px_rgba(153,27,27,0.2)]"
+              className="px-8 py-3 border border-gray-800 text-gray-500 hover:bg-white/5 hover:text-gray-300 transition-all rounded font-sans uppercase tracking-[0.2em] text-sm"
             >
-              Flee Immediately
+              Leave
+            </button>
+            <button
+              onClick={() => setShowNormalSite(true)}
+              className="text-xs text-gray-700 hover:text-gray-400 transition-colors font-serif italic underline underline-offset-4"
+            >
+              if you choose to be stubborn about it
             </button>
           </motion.div>
-          
-          {/* Creepy floating elements */}
-          <div className="absolute top-10 left-10 text-5xl animate-bounce delay-1000 z-10 opacity-20">🦇</div>
-          <div className="absolute bottom-20 right-20 text-5xl animate-pulse z-10 opacity-20">🕷️</div>
-          <div className="absolute top-1/4 right-1/4 text-5xl animate-bounce z-10 opacity-20">🕸️</div>
-          <div className="absolute bottom-1/4 left-1/4 text-5xl animate-pulse z-10 opacity-20">👻</div>
         </div>
       ) : (
         <>
