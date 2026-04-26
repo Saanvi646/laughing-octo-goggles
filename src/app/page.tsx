@@ -6,10 +6,24 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { LogOut } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const router = useRouter();
   const supabase = createClient();
+  const [username, setUsername] = useState('...');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email) {
+        const namePart = user.email.split('@')[0];
+        const capitalized = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+        setUsername(capitalized);
+      }
+    };
+    fetchUser();
+  }, [supabase.auth]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -75,7 +89,7 @@ export default function Home() {
           variants={itemVariants}
           className="text-4xl font-hand mb-3 text-gray-800"
         >
-          Welcome back, Pari 🎀
+          Welcome back, {username} 🎀
         </motion.h1>
 
         <motion.p
