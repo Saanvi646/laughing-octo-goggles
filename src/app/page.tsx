@@ -96,7 +96,7 @@ export default function Home() {
           variants={itemVariants}
           className="text-gray-500 mb-12 font-sans"
         >
-          this is your shared space — slow, private, intentional
+          good 'ol-days' babbyyyy
         </motion.p>
 
         <motion.div
@@ -106,7 +106,7 @@ export default function Home() {
           <Link href="/letters" className="group md:col-span-2">
             <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg">
               <h2 className="text-xl font-medium text-gray-800 mb-1">Letters</h2>
-              <p className="text-sm text-gray-500">long-form thoughts, written and kept</p>
+              <p className="text-sm text-gray-500"> just some empty words </p>
             </div>
           </Link>
 
@@ -127,7 +127,7 @@ export default function Home() {
           <Link href="/promises" className="group">
             <div className="glass rounded-xl p-6 transition-all duration-300 hover:bg-white/60 hover:scale-[1.02] hover:shadow-lg h-full">
               <h2 className="text-xl font-medium text-gray-800 mb-1">Promises</h2>
-              <p className="text-sm text-gray-500">pinky swears and commitments</p>
+              <p className="text-sm text-gray-500">pinky swears and commitments(do you find it funny too?)</p>
             </div>
           </Link>
         </motion.div>
